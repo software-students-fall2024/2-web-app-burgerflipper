@@ -25,7 +25,10 @@ def home():
     search_query = request.args.get('search', '')
     user = flask_login.current_user.id
     if search_query:
-        filtered_entries = entries.find({"title": {"$regex": search_query, "user_id": ObjectId(user),"$options": "i"}})  # Case-insensitive search
+        filtered_entries = entries.find({
+            "title": {"$regex": search_query, "$options": "i"}, 
+            "user_id": ObjectId(user)
+        })  
         filtered_entries = list(filtered_entries) 
     else:
         filtered_entries = list(entries.find({"user_id": ObjectId(user)}))  
